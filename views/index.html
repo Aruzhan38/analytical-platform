@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Crime Statistics Analytics Platform</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="bg-light">
+
+<div class="container mt-5">
+  <div class="text-center mb-5">
+    <h1 class="display-4 fw-bold text-primary">Crime Statistics Analytics(2025)</h1>
+    <p class="lead text-muted mx-auto" style="max-width: 800px;">
+      Explore urban safety trends using historical data. Select a category to visualize crime incidents 
+      over time and analyze key statistical measures like averages and standard deviations.
+    </p>
+  </div>
+
+  <div class="card shadow-sm mb-4">
+    <div class="card-body">
+      <div class="row g-3 align-items-end">
+        <div class="col-md-3">
+          <label class="form-label fw-bold">Select Crime Category</label>
+          <select id="field" class="form-select">
+            <option value="totalIncidents">Total Incidents</option>
+            <option value="midnightIncidents">Midnight Activity</option>
+            <option value="vehicleThefts">Vehicle Thefts</option>
+          </select>
+        </div>
+        <div class="col-md-2">
+          <label class="form-label fw-bold">Chart Type</label>
+          <select id="chartType" class="form-select">
+            <option value="line">Line Chart</option>
+            <option value="bar">Bar Chart</option>
+          </select>
+        </div>
+        <div class="col-md-3">
+          <label class="form-label fw-bold">Start Date</label>
+          <input type="date" id="start" class="form-control" max="2026-12-31">
+        </div>
+        <div class="col-md-3">
+          <label class="form-label fw-bold">End Date</label>
+          <input type="date" id="end" class="form-control" max="2026-12-31">
+        </div>
+        <div class="col-md-1">
+          <button class="btn btn-primary w-100" onclick="loadData()">Load</button>
+        </div>
+        <div class="d-flex justify-content-between align-items-center mt-3">
+          <button id="prevBtn" class="btn btn-outline-secondary btn-sm" onclick="changePage(-1)" disabled>← Back</button>
+          <span id="currentPageDisplay" class="fw-bold">Page: 1</span>
+          <button id="nextBtn" class="btn btn-outline-secondary btn-sm" onclick="changePage(1)">Next →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="errorBox" class="alert alert-danger d-none shadow-sm"></div>
+
+  <div class="card shadow-sm mb-4">
+    <div class="card-body">
+      <canvas id="chart" style="max-height: 400px;"></canvas>
+      <div class="mt-2 small text-muted text-end" id="pageInfo"></div>
+    </div>
+  </div>
+
+  <div class="mb-5">
+    <h4 class="mb-3 fw-bold">Statistical Summary</h4>
+    <div class="row g-3 text-center">
+      <div class="col-md-3">
+        <div class="card border-0 shadow-sm bg-white h-100">
+          <div class="card-body">
+            <h6 class="text-uppercase text-muted small">Average</h6>
+            <h2 class="fw-bold text-primary mb-0" id="metric-avg">-</h2>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card border-0 shadow-sm bg-white h-100">
+          <div class="card-body">
+            <h6 class="text-uppercase text-muted small">Minimum</h6>
+            <h2 class="fw-bold text-success mb-0" id="metric-min">-</h2>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card border-0 shadow-sm bg-white h-100">
+          <div class="card-body">
+            <h6 class="text-uppercase text-muted small">Maximum</h6>
+            <h2 class="fw-bold text-danger mb-0" id="metric-max">-</h2>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card border-0 shadow-sm bg-white h-100">
+          <div class="card-body">
+            <h6 class="text-uppercase text-muted small">Std. Deviation</h6>
+            <h2 class="fw-bold text-info mb-0" id="metric-std">-</h2>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="/js/main.js"></script>
+</body>
+</html>
