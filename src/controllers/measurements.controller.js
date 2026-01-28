@@ -8,7 +8,8 @@ function badRequest(res, message) {
 
 function parseDateOrNull(s) {
   const d = new Date(s);
-  return Number.isNaN(d.getTime()) ? null : d;
+  if (isNaN(d)) return null;
+  return d;
 }
 
 function validateField(field, res) {
@@ -52,13 +53,11 @@ exports.getMeasurements = async (req, res) => {
     const dates = validateDates(start_date, end_date, res);
     if (!dates || dates.error) return;
 
-    const page = Math.max(parseInt(req.query.page || "1", 10), 1);
-    const limit = Math.min(Math.max(parseInt(req.query.limit || "200", 10), 1), 1000);
+    const page = Math.max(Number(req.query.page) || 1, 1);
+    const limit = Math.max(Number(req.query.limit) || 200, 1);
     const skip = (page - 1) * limit;
 
-    const filter = {
-      timestamp: { $gte: dates.start, $lte: dates.end }
-    };
+    const filter = {timestamp: { $gte: dates.start, $lte: dates.end }}; 
 
     const total = await Measurement.countDocuments(filter);
 
@@ -96,9 +95,7 @@ exports.getMetrics = async (req, res) => {
     const dates = validateDates(start_date, end_date, res);
     if (!dates || dates.error) return;
 
-    const match = {
-      timestamp: { $gte: dates.start, $lte: dates.end }
-    };
+    const match = { timestamp: { $gte: dates.start, $lte: dates.end } };
 
     const result = await Measurement.aggregate([
       { $match: match },
